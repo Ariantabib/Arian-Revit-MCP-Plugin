@@ -182,7 +182,7 @@ public static class ArchDetailTools
         double w = U.Mm(widthMm), g = U.Mm(gapMm);
         var s = U.Pt(start, z);
         var e1 = s + d * U.Mm(l1);
-        var s2 = e1 + d * w + nrm * (w + g);      // run 2 starts beyond the landing and comes back
+        var s2 = e1 + nrm * (w + g);              // run 2 starts level with the end of run 1; Revit's automatic landing then spans beyond both runs
         var e2 = s2 - d * U.Mm(l2);
         var runs = new List<(Line, double)> { (Line.CreateBound(s, e1), widthMm), (Line.CreateBound(s2, e2), widthMm) };
         return ArchBuildTools.BuildStairs(doc, runs, bl, tl, null, riserMm + 5, treadMm);

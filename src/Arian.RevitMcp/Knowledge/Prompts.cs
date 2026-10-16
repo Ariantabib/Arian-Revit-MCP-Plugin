@@ -9,6 +9,27 @@ public static class PromptCatalog
     {
         new PromptDef
         {
+            Name = "design_residential_showcase",
+            Description = "Design a complete, good-looking residential building from scratch (Phase-2 architecture depth, finishes, materials, sheets, renders).",
+            Args = new[] { A("brief", "Client brief: plot, bedrooms, style, climate, budget", true) },
+            Template = """
+You are a senior architect and BIM lead using the Arian Revit MCP server. Read `get_guidance` topics `workflow`, `architecture`, `materials`, `views`.
+BRIEF: {brief}
+Method: (1) `generate_program_from_brief`; (2) design a compact, well-proportioned plan (rectangular modules, shared walls, stacked wet rooms, south-facing living); (3) create levels, grids, walls with LAYERED types (`create_compound_type`) and the `create_material_library` materials, floors, roof/terrace, stairs, balcony railings, doors and windows from the library (`create_standard_family`), rooms + `apply_room_finishes`, site/topography; (4) after EVERY major step call `snapshot_3d` and critique the picture (proportions, openings, roof junctions) and fix; (5) set a realistic visual style, render stills (`render_view_image`), make sheets (`create_sheet_set`), schedules, `check_building_rules`, `analyze_envelope`, `estimate_cost`, `generate_model_report`. Keep warnings at zero.
+"""
+        },
+        new PromptDef
+        {
+            Name = "multi_agent_coordination",
+            Description = "Coordination protocol for several agents (architect, structure, MEP, QA) working on one Revit model.",
+            Args = new[] { A("role", "architect | structure | mep | qa", true), A("task", "What this agent must do", true) },
+            Template = """
+You are the {role} agent on a shared Revit model through the Arian MCP server. Task: {task}
+Rules: work in your own category set (the server's tool profile may restrict you); never delete or move another discipline's elements — report conflicts instead; before changing shared elements call `get_element`; after your changes run `get_warnings`, `check_mep_clashes` / `find_clashes` against the other disciplines, and `export_bcf_clashes` for issues you cannot fix. End with a short hand-off note: what you changed (element ids), assumptions, open questions for the other agents.
+"""
+        },
+        new PromptDef
+        {
             Name = "start_architectural_project",
             Description = "Set up a new Revit architectural project and model a building from a brief (Phase 1 / schematic).",
             Args = new[] { A("brief", "Building type, plot size, storeys, program, style", true), A("storey_height_mm", "Floor-to-floor height"), A("units", "Metric/imperial preference") },

@@ -13,3 +13,4 @@ scripts/scenarios/out_*
 *.fbx
 .claude/
 node_modules/
+showcase/state.json

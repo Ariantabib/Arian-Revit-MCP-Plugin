@@ -295,9 +295,9 @@ public static class DocDepthTools
 
     [Tool("dimension_openings", """
         Dimensions the doors/windows of straight walls in a plan view: a chain from wall end → opening → opening → wall end along each wall that hosts openings.
-        @view Plan view. @offset_mm Distance of the dimension line from the wall (default 600). @side exterior | interior (side of the wall normal; default exterior = left of the wall direction).
+        @view Plan view. @offset_mm Distance of the dimension line from the wall (default 600). @side exterior | interior (side of the wall to draw the chain; default exterior = outside). @exterior_only Only exterior walls (default true).
         """, Category = "View")]
-    public static object DimensionOpenings(string view, double offsetMm = 600, string side = "exterior")
+    public static object DimensionOpenings(string view, double offsetMm = 600, string side = "exterior", bool exteriorOnly = true)
     {
         var doc = Ctx.RequireProject();
         var v = Find.View(doc, view);
@@ -306,8 +306,9 @@ public static class DocDepthTools
         int made = 0; var errs = new JsonArray();
         foreach (var w in walls)
         {
+            if (exteriorOnly && w.WallType.Function != WallFunction.Exterior) continue;
             var ops = inst.Where(f => f.Host.Id == w.Id).ToList(); if (ops.Count == 0) continue;
-            var ln = (Line)((LocationCurve)w.Location).Curve; var d = ln.Direction; var n = new XYZ(-d.Y, d.X, 0) * (side == "interior" ? -1 : 1);
+            var ln = (Line)((LocationCurve)w.Location).Curve; var d = ln.Direction; var n = new XYZ(w.Orientation.X, w.Orientation.Y, 0).Normalize() * (side == "interior" ? -1 : 1);   // Wall.Orientation points to the exterior
             try
             {
                 var faces = PlanarFaces(w, v).Where(f => Math.Abs(((PlanarFace)f).FaceNormal.DotProduct(d)) > 0.99).ToList();
@@ -659,6 +660,23 @@ public static class DocDepthTools
         double wwr = ext > 0 ? win / (ext + win) * 100 : 0;
         if (ext > 0 && wwr > lim["max_wwr_percent"]) viol.Add(new JsonObject { ["rule"] = "max_window_to_wall_ratio", ["message"] = $"WWR {wwr:0.0}% > {lim["max_wwr_percent"]:0}% (energy, Mabhas 19 style advisory)" });
         return new JsonObject { ["profile"] = profile, ["checks_run"] = checks, ["violations"] = viol.Count, ["window_to_wall_percent"] = R(wwr), ["limits"] = new JsonObject(lim.Select(kv => new KeyValuePair<string, JsonNode>(kv.Key, kv.Value))), ["items"] = viol, ["note"] = "Default limits are typical values; confirm against the current Iranian national building regulations (Mabhas 4, 19, 22 ...) and the project's use before relying on the result." };
+    }
+
+    [Tool("place_image_on_sheet", """
+        Places a raster image (e.g. a render from render_view_image) on a sheet or drafting view at a given size — for presentation boards and cover sheets.
+        @sheet Sheet number/name/id. @path Image file (png/jpg/bmp/tif). @center [x,y] mm on the sheet (sheet origin = lower-left corner of the sheet). @width_mm Width on paper (height follows the image aspect).
+        """, Category = "View")]
+    public static object PlaceImageOnSheet(string sheet, string path, double[] center, double widthMm = 300)
+    {
+        var doc = Ctx.RequireProject();
+        if (!System.IO.File.Exists(path)) throw new ToolException("Image not found: " + path);
+        var v = ViewOrSheet(doc, sheet);
+        var it = ImageType.Create(doc, new ImageTypeOptions(path, false, ImageTypeSource.Import));
+        var opt = new ImagePlacementOptions(U.Pt(center, 0), BoxPlacement.Center);
+        var inst = ImageInstance.Create(doc, v, it.Id, opt);
+        double ar = inst.Height / inst.Width;
+        inst.Width = U.Mm(widthMm); try { inst.Height = U.Mm(widthMm) * ar; } catch { }
+        return new JsonObject { ["id"] = inst.Id.Value, ["width_mm"] = widthMm, ["height_mm"] = R(U.ToMm(inst.Height), 0) };
     }
 
     // ====================================================================== CAD / PDF standards

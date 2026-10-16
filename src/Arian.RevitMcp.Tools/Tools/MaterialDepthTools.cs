@@ -263,6 +263,43 @@ public static class MaterialDepthTools
         return new JsonObject { ["view"] = v.Name, ["style"] = v.DisplayStyle.ToString() };
     }
 
+    [Tool("set_view_environment", """
+        Sets the look of a 3D view's environment: sun shadow intensity, sky/background and sun position — what turns a flat model picture into an architectural render.
+        @view 3D view. @shadows Shadow intensity 0-100 (0 = off; default 70). @background gradient | sky | color | none. @sky_color @horizon_color @ground_color {r,g,b} for gradient (defaults: soft blue sky, pale horizon, warm ground), @color for 'color'.
+        @date ISO date and @hour sun position (uses the project location); omit to keep.
+        """, Category = "View")]
+    public static object SetViewEnvironment(string view, double shadows = 70, string background = "gradient", MaterialTools.RgbColor skyColor = null, MaterialTools.RgbColor horizonColor = null, MaterialTools.RgbColor groundColor = null, MaterialTools.RgbColor color = null, string date = null, double? hour = null)
+    {
+        var doc = Ctx.RequireProject();
+        var v = Find.View(doc, view) as View3D ?? throw new ToolException("A 3D view is required.");
+        var notes = new JsonArray();
+        Color C(MaterialTools.RgbColor c, byte r, byte g, byte b) => new Color(c?.R ?? r, c?.G ?? g, c?.B ?? b);
+        try { v.ShadowIntensity = (int)Math.Clamp(Math.Round(shadows), 0, 100); } catch (Exception ex) { notes.Add("shadows: " + ex.Message); }
+        try
+        {
+            ViewDisplayBackground bg = null;
+            switch ((background ?? "gradient").ToLowerInvariant())
+            {
+                case "gradient": bg = ViewDisplayBackground.CreateGradient(C(skyColor, 120, 168, 222), C(horizonColor, 228, 236, 244), C(groundColor, 150, 146, 138)); break;
+                case "sky": bg = ViewDisplayBackground.CreateSky(); break;
+                case "color": { var cc = C(color, 255, 255, 255); bg = ViewDisplayBackground.CreateGradient(cc, cc, cc); break; }
+            }
+            if (bg != null) v.SetBackground(bg);
+        }
+        catch (Exception ex) { notes.Add("background: " + ex.Message); }
+        if (date != null || hour.HasValue)
+        {
+            try
+            {
+                var d0 = date == null ? new DateTime(DateTime.Now.Year, 6, 21) : DateTime.Parse(date, System.Globalization.CultureInfo.InvariantCulture);
+                var st = v.SunAndShadowSettings; st.SunAndShadowType = SunAndShadowType.StillImage;
+                st.StartDateAndTime = DateTime.SpecifyKind(d0.Date.AddHours(hour ?? 14), DateTimeKind.Local);
+            }
+            catch (Exception ex) { notes.Add("sun: " + ex.Message); }
+        }
+        return new JsonObject { ["view"] = v.Name, ["shadow_intensity"] = shadows, ["background"] = background, ["notes"] = notes };
+    }
+
     [Tool("render_view_image", """
         Exports a view as a high-resolution PNG/JPG file using Revit's own renderer for the view's visual style (use set_view_visual_style 'realistic' first for materials/textures). @view View name/id (default active). @width_px Pixel size of the longest side (default 3000). @format png | jpg. @path Output file (default: Documents/ArianRenders).
         """, Category = "View", NoTransaction = true)]

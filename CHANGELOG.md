@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.6.0 (phase 8 + showcase villa)
+- Phase 8: `generate_program_from_brief`, `estimate_cost`, `analyze_envelope`, `sun_study`, `export_bcf_clashes`, `generate_model_report`; MCP prompts `design_residential_showcase` and `multi_agent_coordination`.
+- New: `set_view_environment` (shadows, sky gradient, sun position), `place_image_on_sheet`, family spec `use_parameters` + `materials`, `dimension_openings` now draws outside exterior walls.
+- Fixes: free-standing family placement (level Z, rotation pivot), U-stair landing, flex test no longer opens unignorable error dialogs, dialog dismisser skips disabled buttons (picks Cancel) + background watchdog.
+- `showcase/`: scripts that build the 'Villa Arian' two-storey residence end to end (levels, layered walls, openings, stairs, rooms, finishes, furniture, site, renders, sheets).
+
 ## 1.5.0 (phases 5, 6, 7, 10)
 - Families: `list_standard_families`/`create_standard_family` (19 ready parametric families incl. MEP connectors), `family_qa_report`, `family_export_type_catalog`, `family_import_types_csv`, `family_add_nested`. Flex test no longer scales helper (Ref_*) parameters; library shapes are flex-safe.
 - Materials: `create_material_library` (Persian + global), `set_material_appearance` (colour/gloss/reflectivity/diffuse+bump textures), `set_material_physical`, `material_pass`, `set_view_visual_style`, `render_view_image`, `export_fbx` (fbx/obj/stl/step), `list_render_plugins`. Fixed: appearance-asset edits silently failed since 1.0 (needs an outer transaction).

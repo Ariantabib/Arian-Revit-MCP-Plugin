@@ -1,19 +1,19 @@
 # Arian Revit MCP Plugin — tool reference
 
-325 tools. All lengths are millimetres, angles degrees, areas m², volumes m³.
+333 tools. All lengths are millimetres, angles degrees, areas m², volumes m³.
 
 | Category | Tools |
 |---|---|
 | Session | 16 |
-| Query | 17 |
-| Architecture | 53 |
+| Query | 19 |
+| Architecture | 54 |
 | Structure | 28 |
 | MEP | 34 |
 | Family | 45 |
 | Material | 17 |
-| View | 64 |
+| View | 67 |
 | Modify | 20 |
-| Manage | 23 |
+| Manage | 25 |
 | Advanced | 8 |
 
 ## Session
@@ -87,6 +87,14 @@ Synchronise a workshared document with central.
 Arguments: comment, relinquish
 
 ## Query
+
+### `analyze_envelope` _(read-only)_
+Building-envelope summary for energy/daylight discussions: gross exterior wall area by orientation (N/E/S/W relative to project north), window area and window-to-wall ratio per orientation, roof area, heated floor area (rooms), volume.
+
+### `estimate_cost` _(read-only)_
+5D quick cost estimate from the model quantities: walls, floors, roofs, ceilings, doors, windows, curtain walls, stairs, railings, columns, beams, footings. Prices come from @price_list (match = text found in the family/type name, unit = m2 | m3 | m | count, rate per unit) or built-in sample rates (USD-like, indicative only).
+
+Arguments: price_list, categories, currency, csv_path
 
 ### `find_clashes` _(read-only)_
 Clash detection: finds pairs of elements from set A that geometrically intersect elements from set B (e.g. ducts vs structural framing). Sets are defined by category, or explicit ids.
@@ -396,6 +404,11 @@ Arguments: **wall_ids**, **profile_type**, kind, distance_mm, side, from_top, ve
 Creates a chain of connected walls through the given points (polyline). Set closed=true to close the loop (e.g. a room outline or building perimeter). Corners are auto-joined by Revit.
 
 Arguments: **points**, **wall_type**, **base_level**, top_level, height_mm, closed, base_offset_mm, top_offset_mm, location_line, structural
+
+### `generate_program_from_brief` _(read-only)_
+Turns a short residential brief into a physical PROGRAM: list of rooms with target areas (m²), level, zone (public/private/service) and adjacency hints — ready to feed create_plan_from_rooms or a manual design.
+
+Arguments: bedrooms, total_area_m2, floors, master_suite, extras, style
 
 ### `join_walls`
 Controls how a wall end joins its neighbour at a corner.
@@ -1180,7 +1193,7 @@ Arguments: **view**, offset_mm
 ### `dimension_openings`
 Dimensions the doors/windows of straight walls in a plan view: a chain from wall end → opening → opening → wall end along each wall that hosts openings.
 
-Arguments: **view**, offset_mm, side
+Arguments: **view**, offset_mm, side, exterior_only
 
 ### `duplicate_view`
 Duplicates a view.
@@ -1287,6 +1300,11 @@ Overrides how elements or a whole category are drawn in a view (colour, line wei
 
 Arguments: **view**, element_ids, category, line_color, fill_color, line_weight, transparency, halftone, solid_fill, clear
 
+### `place_image_on_sheet`
+Places a raster image (e.g. a render from render_view_image) on a sheet or drafting view at a given size — for presentation boards and cover sheets.
+
+Arguments: **sheet**, **path**, **center**, width_mm
+
 ### `place_view_on_sheet`
 Places a view (or schedule) on a sheet.
 
@@ -1317,6 +1335,11 @@ Sets the crop box of a view to a rectangle in model coordinates (plans/elevation
 
 Arguments: **view**, **min**, **max**
 
+### `set_view_environment`
+Sets the look of a 3D view's environment: sun shadow intensity, sky/background and sun position — what turns a flat model picture into an architectural render.
+
+Arguments: **view**, shadows, background, sky_color, horizon_color, ground_color, color, date, hour
+
 ### `set_view_properties`
 Changes view settings.
 
@@ -1336,6 +1359,11 @@ Arguments: **style**, view
 One-call 3D picture of the whole model (or of selected elements) from a chosen direction — the quickest way to LOOK at what you built. Creates/reuses a 3D view named 'Arian Snapshot', frames the model, renders shaded and returns the PNG.
 
 Arguments: direction, element_ids, width_px, hide_categories
+
+### `sun_study`
+Renders a sun/shadow study of a 3D view: one image per time of day on a given date, with shadows on (project location is used for the sun position).
+
+Arguments: view, date, hours, folder, width_px
 
 ### `tag_elements`
 Tags elements in a view with their category tag (door numbers, wall types, room tags are separate: tag_rooms).
@@ -1481,6 +1509,16 @@ Arguments: preferred_buttons, list_only
 
 ### `enable_worksharing`
 Enables worksharing on the project (creates default worksets).
+
+### `export_bcf_clashes` _(read-only)_
+Detects clashes between two categories and writes them as a BCF 2.1 file (issues for Navisworks, Solibri, BIMcollab, Revizto...). Each clash becomes a topic with both elements' ids/names.
+
+Arguments: **category_a**, **category_b**, **path**, limit
+
+### `generate_model_report`
+Writes a self-contained HTML report of the model: project info, levels, room/area table, quantities by category, building-rule check, warnings, envelope summary, estimated cost and images of chosen views embedded. Opens anywhere (no internet needed).
+
+Arguments: **path**, title, views, include_cost, rules_profile
 
 ### `get_dialog_log` _(read-only)_
 Recent Revit dialogs / message boxes that appeared (and how they were answered). Use when a tool call times out.

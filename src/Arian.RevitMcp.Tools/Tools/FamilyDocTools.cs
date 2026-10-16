@@ -237,6 +237,24 @@ static class FamUtil
     }
 }
 
+
+/// <summary>Used by the flex test: any error (e.g. a parameter value that makes the geometry invalid) rolls the case back silently instead of opening Revit's error dialog.</summary>
+public sealed class FlexFailurePreprocessor : IFailuresPreprocessor
+{
+    public static volatile bool Hit; public static string Message;
+    public static void Reset() { Hit = false; Message = null; }
+    public FailureProcessingResult PreprocessFailures(FailuresAccessor fa)
+    {
+        bool err = false;
+        foreach (var m in fa.GetFailureMessages())
+        {
+            if (m.GetSeverity() == FailureSeverity.Warning) { fa.DeleteWarning(m); continue; }
+            err = true; Hit = true; Message ??= m.GetDescriptionText();
+        }
+        return err ? FailureProcessingResult.ProceedWithRollBack : FailureProcessingResult.Continue;
+    }
+}
+
 public static class FamilyDocTools
 {
     // =============================================================== lifecycle
@@ -1038,8 +1056,15 @@ public static class FamilyDocTools
             p.Definition.GetDataType() == SpecTypeId.Length && !p.Definition.Name.StartsWith("Ref_", StringComparison.Ordinal) && p.Definition.Name != "Default Elevation" && (parameters == null || parameters.Contains(p.Definition.Name, StringComparer.OrdinalIgnoreCase))).ToList();
         var results = new JsonArray();
         var original = fm.CurrentType;
+        bool outer = fd.IsModifiable;
         foreach (FamilyType t in fm.Types)
         {
+            Transaction own = null;
+            if (!outer)
+            {
+                own = new Transaction(fd, "Arian: flex type"); own.Start();
+                var fho = own.GetFailureHandlingOptions(); fho.SetFailuresPreprocessor(new FlexFailurePreprocessor()); fho.SetClearAfterRollback(true); own.SetFailureHandlingOptions(fho);
+            }
             fm.CurrentType = t;
             var baseVals = lenParams.ToDictionary(p => p, p => t.AsDouble(p) ?? 0);
             foreach (var f in factors)
@@ -1054,12 +1079,14 @@ public static class FamilyDocTools
                 }
                 catch (Exception ex) { status = "FAILED"; err = ex.Message; }
                 sub.RollBack();
+                if (FlexFailurePreprocessor.Hit) { status = "FAILED"; err ??= FlexFailurePreprocessor.Message; FlexFailurePreprocessor.Reset(); }
                 var o = new JsonObject { ["type"] = t.Name, ["factor"] = f, ["status"] = status };
                 if (err != null) o["error"] = err;
                 results.Add(o);
             }
+            if (own != null) { try { if (own.GetStatus() == TransactionStatus.Started) own.RollBack(); } catch { } own.Dispose(); }
         }
-        if (original != null) fm.CurrentType = original;
+        if (outer && original != null) fm.CurrentType = original;
         bool allOk = results.All(r => r["status"].ToString() == "ok");
         return new JsonObject { ["passed"] = allOk, ["flexed_parameters"] = new JsonArray(lenParams.Select(p => (JsonNode)p.Definition.Name).ToArray()), ["results"] = results };
     }

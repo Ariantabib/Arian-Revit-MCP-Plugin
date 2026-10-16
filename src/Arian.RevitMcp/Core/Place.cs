@@ -157,8 +157,25 @@ public static class Place
                 throw new ToolException($"Placement type {ptype} is not supported by this tool; use execute_csharp for adaptive/pattern-based families.");
         }
 
-        if (Math.Abs(s.RotationDeg) > 1e-9 && fi.Location is LocationPoint lp)
-            ElementTransformUtils.RotateElement(doc, fi.Id, Geo.AxisZ(lp.Point), U.Deg(s.RotationDeg));
+        // free-standing level-based families: make the absolute Z of the insertion point authoritative (Revit may add the level elevation again)
+        if (pt != null && (ptype == FamilyPlacementType.OneLevelBased) && fi.Location is LocationPoint lp0)
+        {
+            doc.Regenerate();
+            double dz = pt.Z - ((LocationPoint)fi.Location).Point.Z;
+            if (Math.Abs(dz) > 1e-4)
+            {
+                var off = fi.get_Parameter(BuiltInParameter.INSTANCE_FREE_HOST_OFFSET_PARAM);
+                if (off != null && !off.IsReadOnly) off.Set(off.AsDouble() + dz);
+                else ElementTransformUtils.MoveElement(doc, fi.Id, new XYZ(0, 0, dz));
+            }
+        }
+        if (Math.Abs(s.RotationDeg) > 1e-9 && fi.Location is LocationPoint && pt != null)
+        {
+            doc.Regenerate();
+            var pivot = ((LocationPoint)fi.Location).Point;
+            // rotate about the vertical axis through the insertion point (XY of the requested point is authoritative)
+            ElementTransformUtils.RotateElement(doc, fi.Id, Geo.AxisZ(new XYZ(pt.X, pt.Y, pivot.Z)), U.Deg(s.RotationDeg));
+        }
         if (s.FlipHand && fi.CanFlipHand) fi.flipHand();
         if (s.FlipFacing && fi.CanFlipFacing) fi.flipFacing();
         if (s.ElevationMm != 0 && zGiven == false && (ptype == FamilyPlacementType.OneLevelBasedHosted))

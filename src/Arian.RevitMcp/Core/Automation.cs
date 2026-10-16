@@ -23,9 +23,24 @@ public static class Automation
     static readonly List<DialogRecord> Dialogs = new();
     static readonly object Gate = new();
     public static long WarningsIgnored, ErrorsResolved, DialogsDismissed;
+    static System.Threading.Timer _watch; static volatile bool _busyWatch;
 
     public static void Hook(UIControlledApplication app)
     {
+        // watchdog: while a tool has been running a few seconds and a dialog blocks Revit (e.g. 'Error - cannot be ignored'), answer it so the agent never hangs
+        _watch ??= new System.Threading.Timer(_ =>
+        {
+            try
+            {
+                if (_busyWatch || !PluginSettings.Current.AutoDismissDialogs) return;
+                var since = Server.RevitDispatcher.BusySince;
+                if (Server.RevitDispatcher.CurrentTool == null || since == null || (DateTime.Now - since.Value).TotalSeconds < 4) return;
+                _busyWatch = true;
+                try { var r = DismissDialogs(new[] { "OK", "Continue", "Ignore", "Close", "Cancel", "No" }, false); if ((int)r["dialogs_found"] > 0) Log.Info("Watchdog dismissed dialog(s): " + r.ToJsonString()); }
+                finally { _busyWatch = false; }
+            }
+            catch { _busyWatch = false; }
+        }, null, 3000, 2000);
         app.ControlledApplication.FailuresProcessing += OnFailures;
         app.DialogBoxShowing += OnDialog;
     }
@@ -181,7 +196,7 @@ public static class Automation
             catch { }
 
             // read everything BEFORE clicking: the elements vanish once the dialog closes
-            var named = buttons.Select(b => (el: b, name: (b.Current.Name ?? "").Replace("&", "").Trim())).ToList();
+            var named = buttons.Select(b => { bool en = true; try { en = b.Current.IsEnabled; } catch { } return (el: b, name: (b.Current.Name ?? "").Replace("&", "").Trim(), en); }).Where(x => x.en).ToList();   // disabled buttons (e.g. OK of an unignorable error) are skipped, so Cancel gets chosen
             var buttonNames = new JsonArray(named.Select(x => (JsonNode)x.name).Distinct().Select(n => (JsonNode)n.ToString()).ToArray());
 
             string clicked = null;
@@ -189,7 +204,7 @@ public static class Automation
             {
                 foreach (var want in preferred)
                 {
-                    foreach (var (el, bn) in named)
+                    foreach (var (el, bn, _) in named)
                     {
                         if (!bn.Equals(want, StringComparison.OrdinalIgnoreCase) && !bn.StartsWith(want, StringComparison.OrdinalIgnoreCase)) continue;
                         if (Click(el)) { clicked = bn; break; }

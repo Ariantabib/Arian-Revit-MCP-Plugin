@@ -219,6 +219,13 @@ public sealed class FamShapeSpec
     [Desc("Detail levels where visible: coarse, medium, fine")] public string[] DetailLevels;
 }
 
+public sealed class FamMaterialSpec
+{
+    public string Name;
+    [Desc("Shading/render colour")] public MaterialTools.RgbColor Color;
+    [Desc("0-100")] public int Transparency;
+}
+
 public sealed class FamConnectorSpec
 {
     [Desc("duct | pipe | electrical | conduit | cable_tray")] public string Kind;
@@ -240,10 +247,12 @@ public sealed class FamilySpec
     public List<FamTypeSpec> Types = new();
     public List<FamShapeSpec> Shapes = new();
     public List<FamConnectorSpec> Connectors = new();
+    [Desc("Materials to create inside the family before parameters/shapes use them (name + colour + transparency).")] public List<FamMaterialSpec> Materials = new();
     public bool Save = true;
     public bool Load = true;
     public bool Close = true;
     [Desc("Project to load into (default: the active project)")] public string Project;
+    [Desc("Names of EXISTING template length parameters (e.g. Width, Height, 'Default Sill Height') usable in expressions without redeclaring them.")] public string[] UseParameters;
     public bool FlexTest = true;
     [Desc("Delete the template's pre-built forms (e.g. the default beam/door geometry) before building. Default false.")] public bool ClearGeometry;
     [Desc("Delete the template's default types that are not listed in 'types' (default true when types are given).")] public bool ReplaceTypes = true;
@@ -288,6 +297,19 @@ public static class FamilySpecTools
                     var ids = new FilteredElementCollector(fd).OfClass(typeof(GenericForm)).ToElementIds().ToList();
                     foreach (var id in ids) { try { fd.Delete(id); } catch { } }
                 });
+            if (spec.Materials.Count > 0)
+                Tx(fd, "materials", () => { foreach (var m in spec.Materials) FamilyDocTools.FamilyAddMaterial(m.Name, m.Color, m.Transparency); });
+            // template parameters that expressions may reference (Width, Height, ...)
+            if (spec.UseParameters != null)
+                foreach (var up in spec.UseParameters)
+                {
+                    var fp = fd.FamilyManager.Parameters.Cast<FamilyParameter>().FirstOrDefault(x => x.Definition.Name.Equals(up, StringComparison.OrdinalIgnoreCase))
+                        ?? throw new ToolException($"use_parameters: the template has no parameter '{up}'.");
+                    c.Params[fp.Definition.Name] = new FamParamSpec { Name = fp.Definition.Name, Type = "length" };
+                    double cur = 1000;
+                    try { var ct = fd.FamilyManager.CurrentType; if (ct != null) cur = U.ToMm(ct.AsDouble(fp) ?? 0.0); } catch { }
+                    c.Vals[fp.Definition.Name] = cur > 0 ? cur : 1000;
+                }
             // ------------------------------------------------ 2. parameters
             foreach (var p in spec.Parameters)
             {
@@ -454,12 +476,11 @@ public static class FamilySpecTools
             {
                 try
                 {
-                    Tx(fd, "flex test", () =>
                     {
                         var ft = (JsonObject)J.ToNode(FamilyDocTools.FamilyFlexTest(null, null));
                         result["flex_test_passed"] = ft["passed"]?.DeepClone();
-                        if (ft["passed"]?.GetValue<bool>() == false) c.Notes.Add("Flex test FAILED for some sizes: run family_flex_test for details.");
-                    });
+                        if (ft["passed"]?.GetValue<bool>() == false) c.Notes.Add("Flex test FAILED for some sizes: run family_flex_test for details. " + ft["results"]?.AsArray().FirstOrDefault(r => r?["status"]?.ToString() != "ok")?.ToJsonString());
+                    }
                 }
                 catch (Exception ex) { c.Notes.Add("flex test: " + ex.Message); }
             }
