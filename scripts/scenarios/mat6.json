@@ -1,0 +1,15 @@
+[
+ ["create_project",{"template":"architectural","name":"Smoke Mat6"}],
+ ["create_building_levels",{"floors":2,"floor_height_mm":3000}],
+ ["create_material_library",{},null,{"expectContains":"created_or_updated"}],
+ ["set_material_appearance",{"material":"آجر نما - Facing Brick","color":{"r":190,"g":105,"b":80},"glossiness":15,"reflectivity":5,"diffuse_texture":"D:/Projects/Arian Revit MCP Plugin/scripts/scenarios/brick_test.png","bump_texture":"D:/Projects/Arian Revit MCP Plugin/scripts/scenarios/brick_test.png","bump_amount":40,"texture_scale_mm":600},null,{"expectContains":"applied"}],
+ ["set_material_physical",{"material":"Gypsum Board","preset":"insulation"},null,{"expectContains":"structural_asset_id"}],
+ ["create_compound_type",{"kind":"wall","name":"Arian Brick Wall 300","layers":[{"material":"آجر نما - Facing Brick","thickness_mm":100,"function":"finish1"},{"material":"آجر فشاری - Clay Brick","thickness_mm":200,"function":"structure"}]}],
+ ["material_pass",{"rules":[{"name_contains":"Arian Brick","material":"Plywood","function":"finish1"},{"name_contains":"Arian Brick","material":"آجر نما - Facing Brick","function":"structure"}],"kinds":["wall"]},null,{"expectContains":"layers_changed"}],
+ ["create_walls",{"points":[[0,0],[8000,0],[8000,6000],[0,6000]],"closed":true,"wall_type":"Arian Brick Wall 300","base_level":"Level 1","top_level":"Level 2"}],
+ ["create_3d_view",{"name":"Render3D"}],
+ ["set_view_visual_style",{"style":"realistic","view":"Render3D"}],
+ ["render_view_image",{"view":"Render3D","width_px":1600},null,{"expectContains":"file"}],
+ ["export_fbx",{"view":"Render3D"},null,{"expectContains":"exported"}],
+ ["list_render_plugins",{}]
+]

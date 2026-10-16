@@ -1,0 +1,8 @@
+[
+  ["create_project", {"template":"architectural","name":"Smoke Stairs2"}],
+  ["create_building_levels", {"floors":2,"floor_height_mm":3200}],
+  ["create_l_stairs", {"start":[1000,1000],"direction_deg":90,"base_level":"Level 1","top_level":"Level 2","turn":"right"}],
+  ["create_u_stairs", {"start":[8000,1000],"direction_deg":90,"base_level":"Level 1","top_level":"Level 2"}],
+  ["create_straight_stairs", {"start":[16000,1000],"direction_deg":90,"base_level":"Level 1","top_level":"Level 2"}],
+  ["snapshot_3d", {"direction":"top","width_px":900}]
+]

@@ -1,0 +1,6 @@
+[
+  ["create_project", {"template":"arian","name":"ArianUserTemplateTest3"}],
+  ["create_building_shell", {"width_mm":18000,"depth_mm":12000,"floors":2,"floor_height_mm":3240,"wall_type":"Arian Wall 30cm","floor_type":"Arian Floor 1 20cm","roof_type":"Warm Roof - Concrete","roof_kind":"flat","create_levels":false,"level_names":["Floor 1","Floor 2","Floor 3"]}],
+  ["create_3d_view", {"name":"ShellIso","eye":[30000,-20000,20000],"target":[9000,6000,8000]}],
+  ["get_view_image", {"view":"ShellIso","width_px":1000}]
+]

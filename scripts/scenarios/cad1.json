@@ -1,0 +1,8 @@
+[
+  ["create_project", {"template":"architectural","name":"Smoke Cad1"}],
+  ["create_building_levels", {"floors":2,"floor_height_mm":3000}],
+  ["link_cad", {"path":"C:/Users/arian/Desktop/RE-Aprt-ONEbd_AA.dwg","view":"Level 1","units":"meter"}, "cad"],
+  ["list_cad_layers", {"cad_id":"$cad.id"}],
+  ["convert_cad_double_lines_to_walls", {"cad_id":"$cad.id","layers":["WALL"],"wall_type":"Generic - 200mm","base_level":"Level 1","top_level":"Level 2","min_length_mm":100,"min_thickness_mm":40,"max_thickness_mm":600}, null, {"expectContains":"walls_created"}],
+  ["snapshot_3d", {"direction":"iso_se","width_px":1200}]
+]

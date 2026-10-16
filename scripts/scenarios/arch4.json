@@ -1,0 +1,15 @@
+[
+  ["create_walls", {"points":[[0,0],[10000,0],[10000,8000],[0,8000]],"closed":true,"wall_type":"Generic - 200mm","base_level":"Level 1","top_level":"Level 2"}],
+  ["create_wall", {"start":[5000,0],"end":[5000,8000],"wall_type":"Generic - 200mm","base_level":"Level 1","top_level":"Level 2"}],
+  ["list_element_types", {"category":"Walls","name_contains":"Curtain"}],
+  ["list_element_types", {"category":"Curtain Wall Mullions","limit":5}],
+  ["create_curtain_wall", {"start":[0,-3000],"end":[8000,-3000],"base_level":"Level 1","top_level":"Level 2","vertical_spacing_mm":1500,"horizontal_spacing_mm":1000}],
+  ["create_rooms_automatically", {"level":"Level 1"}],
+  ["create_floors_from_rooms", {"level":"Level 1","floor_type":"Beam and Block 200mm","offset_mm":-100}],
+  ["create_ceilings_from_rooms", {"level":"Level 1","ceiling_type":"Generic","height_offset_mm":2700}],
+  ["place_family_instances", {"items":[{"type":"M_Single-Flush: 0915 x 2134mm","point":[2500,0]},{"type":"M_Single-Flush: 0915 x 2134mm","point":[7500,0]},{"type":"M_Single-Flush: 0915 x 2134mm","point":[5000,5500]}]}],
+  ["number_elements", {"category":"Doors","prefix":"D","digits":2}],
+  ["copy_to_levels", {"ids":[], "source_level":"Level 1","target_levels":["Level 2"]}],
+  ["create_sheets", {"sheets":[{"number":"A-101","name":"Plans","views":["Level 1","Level 2"]}]}],
+  ["get_view_image", {"view":"Level 1","width_px":1100}]
+]

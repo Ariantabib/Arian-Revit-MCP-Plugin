@@ -1,0 +1,12 @@
+[
+  ["family_create", {"name":"ArianTestBox","template":"generic_model","category":"Furniture"}],
+  ["family_get_info", {"document":"ArianTestBox"}],
+  ["family_setup_dimensions", {"document":"ArianTestBox","width_mm":1200,"depth_mm":600,"height_mm":750}],
+  ["family_add_parameter", {"document":"ArianTestBox","name":"BodyMaterial","data_type":"material","group":"materials","instance":false}],
+  ["family_add_box", {"document":"ArianTestBox","width_mm":1200,"depth_mm":600,"height_mm":750,"name":"Body","lock_to_planes":true,"end_plane":"Top","material_parameter":"BodyMaterial"}],
+  ["family_add_type", {"document":"ArianTestBox","name":"1200 x 600","values":{"Width":1200,"Depth":600,"Height":750}}],
+  ["family_add_type", {"document":"ArianTestBox","name":"1800 x 800","values":{"Width":1800,"Depth":800,"Height":900}}],
+  ["family_flex_test", {"document":"ArianTestBox"}],
+  ["family_get_info", {"document":"ArianTestBox"}],
+  ["family_get_geometry_summary", {"document":"ArianTestBox"}]
+]

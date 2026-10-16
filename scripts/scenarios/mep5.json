@@ -1,0 +1,339 @@
+[
+ [
+  "create_project",
+  {
+   "template": "systems",
+   "name": "Smoke MEP5"
+  }
+ ],
+ [
+  "create_walls",
+  {
+   "points": [
+    [
+     0,
+     0
+    ],
+    [
+     8000,
+     0
+    ],
+    [
+     8000,
+     6000
+    ],
+    [
+     0,
+     6000
+    ],
+    [
+     0,
+     0
+    ]
+   ],
+   "wall_type": "Generic - 200mm",
+   "base_level": "Level 1",
+   "top_level": "Level 2"
+  },
+  "walls"
+ ],
+ [
+  "create_room",
+  {
+   "point": [
+    4000,
+    3000
+   ],
+   "level": "Level 1",
+   "name": "Office",
+   "number": "101"
+  },
+  "room"
+ ],
+ [
+  "create_ceiling",
+  {
+   "boundary": [
+    [
+     0,
+     0
+    ],
+    [
+     8000,
+     0
+    ],
+    [
+     8000,
+     6000
+    ],
+    [
+     0,
+     6000
+    ]
+   ],
+   "ceiling_type": "Compound Ceiling: 600 x 600mm Grid",
+   "level": "Level 1",
+   "height_offset_mm": 2700
+  },
+  "ceil"
+ ],
+ [
+  "create_spaces_automatically",
+  {
+   "level": "Level 1"
+  },
+  "spaces"
+ ],
+ [
+  "create_walls",
+  {
+   "points": [
+    [
+     10000,
+     0
+    ],
+    [
+     14000,
+     0
+    ],
+    [
+     14000,
+     4000
+    ],
+    [
+     10000,
+     4000
+    ],
+    [
+     10000,
+     0
+    ]
+   ],
+   "wall_type": "Generic - 200mm",
+   "base_level": "Level 1",
+   "top_level": "Level 2"
+  }
+ ],
+ [
+  "create_space",
+  {
+   "point": [
+    12000,
+    2000
+   ],
+   "level": "Level 1",
+   "name": "Server",
+   "number": "S2",
+   "parameters": {
+    "Design Supply Airflow": 150
+   }
+  }
+ ],
+ [
+  "place_fixtures_in_room",
+  {
+   "family_type": "M_Plain Recessed Lighting Fixture: 600x1200 - 120",
+   "room_id": "$spaces.ids.0",
+   "spacing_x_mm": 2500,
+   "spacing_y_mm": 2500,
+   "elevation_mm": 2700,
+   "host_id": "$ceil.id"
+  },
+  "lights"
+ ],
+ [
+  "place_family_instance",
+  {
+   "spec": {
+    "type": "M_Lighting and Appliance Panelboard - 208V MLO: 100 A",
+    "point": [
+     1000,
+     100
+    ],
+    "level": "Level 1",
+    "host_id": "$walls.walls.0.id",
+    "elevation_mm": 1500
+   }
+  },
+  "panel"
+ ],
+ [
+  "place_family_instance",
+  {
+   "spec": {
+    "type": "M_Duplex Receptacle: Standard",
+    "point": [
+     3000,
+     100
+    ],
+    "level": "Level 1",
+    "host_id": "$walls.walls.0.id",
+    "elevation_mm": 300
+   }
+  },
+  "recep"
+ ],
+ [
+  "calc_duct_size",
+  {
+   "airflow_lps": 500,
+   "max_velocity_mps": 6
+  },
+  null,
+  {
+   "expectContains": "rectangular"
+  }
+ ],
+ [
+  "calc_pipe_size",
+  {
+   "fixture_units": 40
+  },
+  null,
+  {
+   "expectContains": "nominal_diameter_mm"
+  }
+ ],
+ [
+  "calc_space_loads",
+  {
+   "profile": "office"
+  },
+  null,
+  {
+   "expectContains": "total_cooling_kw"
+  }
+ ],
+ [
+  "place_lights_by_lux",
+  {
+   "room_id": "$spaces.ids.0",
+   "family_type": "M_Plain Recessed Lighting Fixture: 600x1200 - 120",
+   "target_lux": 500,
+   "lumens_per_fixture": 4000,
+   "host_id": "$ceil.id"
+  },
+  null,
+  {
+   "expectContains": "achieved_lux"
+  }
+ ],
+ [
+  "place_sockets_along_walls",
+  {
+   "room_id": "$spaces.ids.0",
+   "family_type": "M_Duplex Receptacle: Standard",
+   "spacing_mm": 3000
+  },
+  null,
+  {
+   "expectContains": "placed"
+  }
+ ],
+ [
+  "create_electrical_circuit",
+  {
+   "element_ids": [
+    "$lights.ids.0",
+    "$lights.ids.1"
+   ],
+   "system_type": "power",
+   "panel_id": "$panel.id",
+   "load_name": "Lights A"
+  }
+ ],
+ [
+  "get_panel_loads",
+  {
+   "panel_id": "$panel.id"
+  },
+  null,
+  {
+   "expectContains": "total_va"
+  }
+ ],
+ [
+  "create_panel_schedule",
+  {
+   "panel_id": "$panel.id"
+  }
+ ],
+ [
+  "route_mep_auto",
+  {
+   "kind": "duct",
+   "start": [
+    500,
+    500,
+    3000
+   ],
+   "end": [
+    7000,
+    5000,
+    3000
+   ],
+   "type": "Rectangular Duct: Mitered Elbows / Taps",
+   "system_type": "Supply Air",
+   "level": "Level 1",
+   "width_mm": 400,
+   "height_mm": 250
+  },
+  null,
+  {
+   "expectContains": "bends"
+  }
+ ],
+ [
+  "create_sloped_pipe",
+  {
+   "start": [
+    500,
+    200,
+    2600
+   ],
+   "end": [
+    7000,
+    200
+   ],
+   "pipe_type": "Pipe Types: Standard",
+   "system_type": "Sanitary",
+   "level": "Level 1",
+   "slope_percent": 2,
+   "diameter_mm": 100
+  },
+  null,
+  {
+   "expectContains": "end_z_mm"
+  }
+ ],
+ [
+  "auto_size_ducts",
+  {
+   "flow_lps": 300,
+   "max_velocity_mps": 6
+  },
+  null,
+  {
+   "expectContains": "resized"
+  }
+ ],
+ [
+  "check_mep_systems",
+  {},
+  null,
+  {
+   "expectContains": "ducts"
+  }
+ ],
+ [
+  "check_mep_clashes",
+  {
+   "category_a": "Ducts",
+   "category_b": "Pipes"
+  },
+  null,
+  {
+   "expectContains": "clashes"
+  }
+ ]
+]

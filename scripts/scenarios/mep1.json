@@ -1,0 +1,15 @@
+[
+  ["family_create", {"name":"ArianAHU","template":"mechanical_equipment"}],
+  ["family_setup_dimensions", {"document":"ArianAHU","width_mm":2000,"depth_mm":1000,"height_mm":1200}],
+  ["family_add_box", {"document":"ArianAHU","width_mm":2000,"depth_mm":1000,"height_mm":1200,"name":"Casing","lock_to_planes":true,"end_plane":"Top"}, "box"],
+  ["family_add_connector", {"document":"ArianAHU","kind":"duct","form_id":"$box.id","point":[1000,0,600],"system_type":"supply_air","shape":"rectangular","width_mm":600,"height_mm":400}],
+  ["family_add_connector", {"document":"ArianAHU","kind":"duct","form_id":"$box.id","point":[-1000,0,600],"system_type":"return_air","shape":"rectangular","width_mm":600,"height_mm":400}],
+  ["family_add_type", {"document":"ArianAHU","name":"AHU-2000"}],
+  ["family_get_info", {"document":"ArianAHU"}],
+  ["family_save", {"document":"ArianAHU"}],
+  ["family_load_into_project", {"document":"ArianAHU","close":true}],
+  ["list_mep_types", {"kind":"duct_type"}],
+  ["list_mep_types", {"kind":"mechanical_system_type"}],
+  ["place_family_instance", {"spec":{"type":"ArianAHU: AHU-2000","point":[2000,5000],"level":"Level 1"}}, "ahu"],
+  ["get_connectors", {"id":"$ahu.id"}]
+]

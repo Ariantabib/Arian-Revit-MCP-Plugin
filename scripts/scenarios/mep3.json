@@ -1,0 +1,14 @@
+[
+  ["create_project", {"template":"systems","name":"ArianSystems"}],
+  ["list_levels", {}],
+  ["list_mep_types", {"kind":"duct_type"}],
+  ["list_mep_types", {"kind":"pipe_type"}],
+  ["list_mep_types", {"kind":"conduit_type"}],
+  ["list_mep_types", {"kind":"cable_tray_type"}],
+  ["list_mep_types", {"kind":"mechanical_system_type"}],
+  ["list_families", {"category":"Mechanical Equipment","include_types":false}],
+  ["list_families", {"category":"Duct Fittings","include_types":false}],
+  ["create_duct_run", {"points":[[0,0,2700],[6000,0,2700],[6000,4000,2700]],"duct_type":"Rectangular Duct: Mitered Elbows / Taps","system_type":"Supply Air","level":"Level 1","width_mm":500,"height_mm":300}],
+  ["create_pipe_run", {"points":[[0,1000,2500],[4000,1000,2500],[4000,3000,2500]],"pipe_type":"Default","system_type":"Domestic Cold Water","level":"Level 1","diameter_mm":25}],
+  ["get_view_image", {"view":"Level 1","width_px":900}]
+]

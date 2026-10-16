@@ -1,0 +1,4 @@
+[
+ ["create_project",{"template":"systems","name":"Smoke Fam5b"}],
+ ["create_standard_family",{"kind":"wc"},null,{"expectContains":"flex_test_passed"}]
+]

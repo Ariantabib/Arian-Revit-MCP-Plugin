@@ -1,0 +1,18 @@
+[
+  ["create_project", {"template":"structural","name":"Smoke Struct4"}],
+  ["create_structural_column", {"point":[0,0],"column_type":"450 x 600mm","base_level":"Level 1","top_level":"Level 2"}, "col"],
+  ["create_beam", {"start":[0,0],"end":[6000,0],"beam_type":"300 x 600mm","level":"Level 2"}, "beam"],
+  ["create_compound_type", {"kind":"floor","name":"Arian RC slab 200","layers":[{"material":"Concrete, Cast-in-Place gray","thickness_mm":200,"function":"structure"}]}],
+  ["create_compound_type", {"kind":"wall","name":"Arian RC wall 200","layers":[{"material":"Concrete, Cast-in-Place gray","thickness_mm":200,"function":"structure"}]}],
+  ["create_floor", {"boundary":[[0,0],[6000,0],[6000,5000],[0,5000]],"floor_type":"Arian RC slab 200","level":"Level 2","structural":true}, "floor"],
+  ["create_wall", {"start":[0,8000],"end":[6000,8000],"wall_type":"Arian RC wall 200","base_level":"Level 1","top_level":"Level 2","structural":true}, "wall"],
+  ["create_beam_reinforcement", {"beam_id":"$beam.id","long_bar_type":"19M","stirrup_type":"10M","cover_mm":30,"bottom_bars":4,"top_bars":2,"stirrup_spacing_mm":200}, null, {"expectContains":"stirrup_sets"}],
+  ["create_slab_reinforcement", {"host_id":"$floor.id","bar_type":"16M","spacing_mm":200,"layers":"both"}, null, {"expectContains":"bars"}],
+  ["create_wall_reinforcement", {"wall_id":"$wall.id","bar_type":"13M","vertical_spacing_mm":250,"horizontal_spacing_mm":250}, null, {"expectContains":"curtains"}],
+  ["set_rebar_cover", {"host_ids":["$beam.id","$floor.id"],"cover_mm":35}, null, {"expectContains":"cover_type"}],
+  ["list_load_cases", {}],
+  ["predesign_sections", {"span_m":6,"load_kn_m2":10,"floors":4}, null, {"expectContains":"beam_mm"}],
+  ["check_beam_clear_height", {}],
+  ["check_column_alignment", {}, null, {"expectContains":"unsupported"}],
+  ["get_structural_summary", {}]
+]

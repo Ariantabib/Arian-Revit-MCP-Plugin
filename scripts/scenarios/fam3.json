@@ -1,0 +1,12 @@
+[
+  ["family_open", {"path":"C:/Users/arian/Documents/ArianFamilies/ArianTestBox.rfa"}],
+  ["family_add_dimension", {"document":"ArianTestBox","plane_a":"Left","plane_b":"Right","plane_c":"Center (Left/Right)","equal":true,"offset_mm":800}],
+  ["family_add_dimension", {"document":"ArianTestBox","plane_a":"Left","plane_b":"Right","label":"Width","offset_mm":1200}],
+  ["family_add_dimension", {"document":"ArianTestBox","plane_a":"Front","plane_b":"Back","plane_c":"Center (Front/Back)","equal":true,"offset_mm":800}],
+  ["family_add_dimension", {"document":"ArianTestBox","plane_a":"Front","plane_b":"Back","label":"Depth","offset_mm":1200}],
+  ["family_add_dimension", {"document":"ArianTestBox","plane_a":"Reference Plane","plane_b":"Top","label":"Height","offset_mm":800}],
+  ["family_add_type", {"document":"ArianTestBox","name":"1800 x 800","values":{"Width":1800,"Depth":800,"Height":900}}],
+  ["family_get_geometry_summary", {"document":"ArianTestBox"}],
+  ["family_add_type", {"document":"ArianTestBox","name":"600 x 400","values":{"Width":600,"Depth":400,"Height":450}}],
+  ["family_get_geometry_summary", {"document":"ArianTestBox"}]
+]

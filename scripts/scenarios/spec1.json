@@ -1,0 +1,26 @@
+[
+  ["create_project", {"template":"architectural","name":"ArianSpec1"}],
+  ["family_build_from_spec", {"spec":{
+    "name":"Arian Table","template":"furniture","category":"Furniture",
+    "parameters":[
+      {"name":"Width","type":"length","value":1600},
+      {"name":"Depth","type":"length","value":800},
+      {"name":"Height","type":"length","value":740},
+      {"name":"Top_Thickness","type":"length","value":30},
+      {"name":"Leg_Size","type":"length","value":60},
+      {"name":"Leg_Inset","type":"length","value":50},
+      {"name":"Top_Material","type":"material","group":"materials"}
+    ],
+    "types":[{"name":"1600x800","values":{"Width":1600,"Depth":800}},{"name":"1200x700","values":{"Width":1200,"Depth":700,"Height":720}}],
+    "shapes":[
+      {"kind":"box","name":"Top","x":["-Width/2","Width/2"],"y":["-Depth/2","Depth/2"],"z":["Height-Top_Thickness","Height"],"material_parameter":"Top_Material"},
+      {"kind":"box","name":"Leg1","x":["-Width/2+Leg_Inset","-Width/2+Leg_Inset+Leg_Size"],"y":["-Depth/2+Leg_Inset","-Depth/2+Leg_Inset+Leg_Size"],"z":["0","Height-Top_Thickness"]},
+      {"kind":"box","name":"Leg2","x":["Width/2-Leg_Inset-Leg_Size","Width/2-Leg_Inset"],"y":["-Depth/2+Leg_Inset","-Depth/2+Leg_Inset+Leg_Size"],"z":["0","Height-Top_Thickness"]},
+      {"kind":"box","name":"Leg3","x":["-Width/2+Leg_Inset","-Width/2+Leg_Inset+Leg_Size"],"y":["Depth/2-Leg_Inset-Leg_Size","Depth/2-Leg_Inset"],"z":["0","Height-Top_Thickness"]},
+      {"kind":"box","name":"Leg4","x":["Width/2-Leg_Inset-Leg_Size","Width/2-Leg_Inset"],"y":["Depth/2-Leg_Inset-Leg_Size","Depth/2-Leg_Inset"],"z":["0","Height-Top_Thickness"]}
+    ]}}],
+  ["place_family_instance", {"spec":{"type":"Arian Table: 1600x800","point":[3000,3000],"level":"Level 1"}}],
+  ["place_family_instance", {"spec":{"type":"Arian Table: 1200x700","point":[6000,3000],"level":"Level 1"}}],
+  ["create_3d_view", {"name":"SpecIso","eye":[10000,-8000,6000],"target":[4500,3000,300],"perspective":false}],
+  ["get_view_image", {"view":"SpecIso","width_px":1000}]
+]

@@ -1,0 +1,21 @@
+[
+  ["place_family_instance", {"spec":{"type":"M_Single-Flush: 0915 x 2134mm","point":[2500,0],"level":"Level 1"}}],
+  ["place_family_instance", {"spec":{"type":"M_Single-Flush: 0915 x 2134mm","point":[5000,2000],"level":"Level 1"}}],
+  ["place_family_instance", {"spec":{"type":"M_Fixed: 0915 x 1220mm","point":[7500,0],"level":"Level 1","elevation_mm":900}}],
+  ["place_family_instance", {"spec":{"type":"M_Fixed: 0915 x 1220mm","point":[10000,4000],"level":"Level 1","elevation_mm":900}}],
+  ["create_floor", {"boundary":[[0,0],[10000,0],[10000,8000],[0,8000]],"floor_type":"Beam and Block 200mm","level":"Level 1","offset_mm":-200}],
+  ["create_floor", {"boundary":[[0,0],[10000,0],[10000,8000],[0,8000]],"floor_type":"Beam and Block 200mm","level":"Level 2","offset_mm":-200}],
+  ["create_ceiling", {"boundary":[[100,100],[9900,100],[9900,7900],[100,7900]],"ceiling_type":"Generic","level":"Level 1","height_offset_mm":2700}],
+  ["create_roof", {"boundary":[[-500,-500],[10500,-500],[10500,8500],[-500,8500]],"roof_type":"Generic - 125mm","level":"Level 2","slope_degrees":25,"sloped_edges":[0,2]}],
+  ["create_rooms_automatically", {"level":"Level 1"}],
+  ["list_rooms", {}],
+  ["create_stairs", {"runs":[{"start":[1000,1000],"end":[1000,3500]}],"base_level":"Level 1","top_level":"Level 2","width_mm":1000}],
+  ["create_railing", {"railing_type":"900mm","level":"Level 1","path":[[0,0],[2000,0]],"elevation_mm":0}],
+  ["create_mass_extrusion", {"boundary":[[12000,0],[15000,0],[15000,3000],[12000,3000]],"height_mm":6000,"name":"Mass A","category":"Generic Models"}],
+  ["get_model_overview", {}],
+  ["create_3d_view", {"name":"SmokeIso"}],
+  ["set_view_properties", {"view":"SmokeIso","display_style":"shaded"}],
+  ["get_view_image", {"view":"SmokeIso","width_px":1200}],
+  ["create_floor_plan", {"level":"Level 1","name":"Smoke L1"}],
+  ["get_view_image", {"view":"Smoke L1","width_px":1200}]
+]

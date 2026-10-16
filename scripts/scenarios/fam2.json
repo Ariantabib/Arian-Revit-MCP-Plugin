@@ -1,0 +1,6 @@
+[
+  ["family_add_type", {"document":"ArianTestBox","name":"1800 x 800","values":{"Width":1800,"Depth":800,"Height":900}}],
+  ["family_get_geometry_summary", {"document":"ArianTestBox"}],
+  ["family_add_type", {"document":"ArianTestBox","name":"600 x 400","values":{"Width":600,"Depth":400,"Height":450}}],
+  ["family_get_geometry_summary", {"document":"ArianTestBox"}]
+]

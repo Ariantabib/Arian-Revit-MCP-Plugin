@@ -1,0 +1,11 @@
+[
+  ["create_columns_at_grid_intersections", {"column_type":"UC-Universal Columns-Column: UC305x305x97","base_level":"Level 1","top_level":"Level 2"}],
+  ["create_beams_along_grids", {"beam_type":"UB-Universal Beams: UB305x165x40","level":"Level 2","z_offset_mm":0}],
+  ["get_structural_summary", {}],
+  ["create_material", {"name":"Arian Concrete C30","color":{"r":170,"g":170,"b":170},"material_class":"Concrete"}],
+  ["create_compound_type", {"kind":"wall","name":"Arian Cavity Wall 350","layers":[{"material":"Arian Brick Red","thickness_mm":100,"function":"finish1"},{"material":"Arian Insulation","thickness_mm":50,"function":"insulation"},{"material":"Arian Concrete C30","thickness_mm":200,"function":"structure"}]}],
+  ["get_type_layers", {"type":"Arian Cavity Wall 350"}],
+  ["create_compound_type", {"kind":"floor","name":"Arian Slab 250","layers":[{"material":"Arian Concrete C30","thickness_mm":250,"function":"structure"}]}],
+  ["create_wall", {"start":[0,10000],"end":[10000,10000],"wall_type":"Arian Cavity Wall 350","base_level":"Level 1","top_level":"Level 2"}],
+  ["get_view_image", {"view":"SmokeIso","width_px":1200}]
+]

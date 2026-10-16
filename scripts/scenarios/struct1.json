@@ -1,0 +1,22 @@
+[
+  ["get_grid_intersections", {}],
+  ["create_columns_at_grid_intersections", {"column_type":"UC-Universal Columns-Column: 254x254x73UC","base_level":"Level 1","top_level":"Level 2"}],
+  ["create_beams_along_grids", {"beam_type":"UB-Universal Beams: 254x146x31UB","level":"Level 2","z_offset_mm":0}],
+  ["get_structural_summary", {}],
+  ["get_quantities", {"category":"Walls","group_by":["type","level"]}],
+  ["audit_model_health", {}],
+  ["get_warnings", {"details":false}],
+  ["create_material", {"name":"Arian Concrete C30","color":{"r":170,"g":170,"b":170},"material_class":"Concrete","surface_pattern":"Solid fill","cut_pattern":"Solid fill"}],
+  ["create_material", {"name":"Arian Brick Red","color":{"r":160,"g":70,"b":50},"material_class":"Masonry"}],
+  ["create_material", {"name":"Arian Insulation","color":{"r":240,"g":220,"b":90},"material_class":"Insulation"}],
+  ["create_compound_type", {"kind":"wall","name":"Arian Cavity Wall 350","layers":[{"material":"Arian Brick Red","thickness_mm":100,"function":"finish1"},{"material":"Arian Insulation","thickness_mm":50,"function":"insulation"},{"material":"Arian Concrete C30","thickness_mm":200,"function":"structure"}]}],
+  ["get_type_layers", {"type":"Arian Cavity Wall 350"}],
+  ["create_schedule", {"category":"Walls","name":"Arian Wall Schedule","fields":["Type","Length","Area","Volume"],"itemize":false,"totals_fields":["Length","Area","Volume"],"grand_total":true}],
+  ["get_schedule_data", {"schedule":"Arian Wall Schedule"}],
+  ["create_schedule", {"category":"Doors","name":"Arian Door Schedule","fields":["Mark","Type","Level","Width","Height"],"sort":[{"field":"Mark"}]}],
+  ["get_schedule_data", {"schedule":"Arian Door Schedule"}],
+  ["create_project_parameter", {"name":"Arian Fire Rating","categories":["Walls","Doors"],"data_type":"text","instance":false}],
+  ["create_sheet", {"number":"A-101","name":"Ground Floor Plan"}],
+  ["place_view_on_sheet", {"sheet":"A-101","view":"Smoke L1"}],
+  ["list_sheets", {}]
+]

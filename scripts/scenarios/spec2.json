@@ -1,0 +1,47 @@
+[
+  ["family_close", {"document":"ArianProbe_structural_column"}],
+  ["family_build_from_spec", {"spec":{
+    "name":"Arian Concrete Column","template":"structural_column","category":"Structural Columns",
+    "parameters":[
+      {"name":"Width","type":"length","value":400},
+      {"name":"Depth","type":"length","value":400}
+    ],
+    "types":[{"name":"400x400","values":{"Width":400,"Depth":400}},{"name":"500x500","values":{"Width":500,"Depth":500}},{"name":"300x600","values":{"Width":300,"Depth":600}}],
+    "shapes":[
+      {"kind":"box","name":"Column","x":["-Width/2","Width/2"],"y":["-Depth/2","Depth/2"],"z":["level:Lower Ref. Level","level:Upper Ref Level"],"material_parameter":"Structural Material"}
+    ]}}],
+  ["family_build_from_spec", {"spec":{
+    "name":"Arian Concrete Beam","template":"structural_framing","category":"Structural Framing","clear_geometry":true,
+    "parameters":[
+      {"name":"b","type":"length","value":300},
+      {"name":"h","type":"length","value":500}
+    ],
+    "types":[{"name":"300x500","values":{"b":300,"h":500}},{"name":"250x400","values":{"b":250,"h":400}},{"name":"400x700","values":{"b":400,"h":700}}],
+    "shapes":[
+      {"kind":"prism","name":"Beam","plane":"yz","points":[["-b/2","-h"],["b/2","-h"],["b/2","0"],["-b/2","0"]],"range":["plane:Left","plane:Right"],"material_parameter":"Structural Material"}
+    ]}}],
+  ["family_build_from_spec", {"spec":{
+    "name":"Arian Steel IBeam","template":"structural_framing","category":"Structural Framing","clear_geometry":true,
+    "parameters":[
+      {"name":"H","type":"length","value":300},
+      {"name":"B","type":"length","value":150},
+      {"name":"tw","type":"length","value":7},
+      {"name":"tf","type":"length","value":11}
+    ],
+    "types":[{"name":"IPE300","values":{"H":300,"B":150,"tw":7.1,"tf":10.7}},{"name":"IPE200","values":{"H":200,"B":100,"tw":5.6,"tf":8.5}}],
+    "shapes":[
+      {"kind":"prism","name":"IProfile","plane":"yz","range":["plane:Left","plane:Right"],"material_parameter":"Structural Material",
+       "points":[["-B/2","-H/2"],["B/2","-H/2"],["B/2","-H/2+tf"],["tw/2","-H/2+tf"],["tw/2","H/2-tf"],["B/2","H/2-tf"],["B/2","H/2"],["-B/2","H/2"],["-B/2","H/2-tf"],["-tw/2","H/2-tf"],["-tw/2","-H/2+tf"],["-B/2","-H/2+tf"]]}
+    ]}}],
+  ["family_build_from_spec", {"spec":{
+    "name":"Arian Pad Footing","template":"structural_foundation","category":"Structural Foundations","clear_geometry":true,
+    "parameters":[
+      {"name":"Length","type":"length","value":1500},
+      {"name":"Width","type":"length","value":1500},
+      {"name":"Foundation Thickness","type":"length","value":500}
+    ],
+    "types":[{"name":"1500x1500x500","values":{"Length":1500,"Width":1500,"Foundation Thickness":500}},{"name":"2000x2000x600","values":{"Length":2000,"Width":2000,"Foundation Thickness":600}}],
+    "shapes":[
+      {"kind":"box","name":"Pad","x":["-Length/2","Length/2"],"y":["-Width/2","Width/2"],"z":["-[Foundation Thickness]","0"]}
+    ]}}]
+]

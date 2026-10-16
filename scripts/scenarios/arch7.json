@@ -1,0 +1,12 @@
+[
+  ["create_project", {"template":"architectural","name":"Smoke Arch7"}],
+  ["create_building_levels", {"floors":2,"floor_height_mm":3200}],
+  ["create_walls", {"points":[[0,0],[10000,0],[10000,8000],[0,8000]],"closed":true,"wall_type":"Generic - 200mm","base_level":"Level 1","top_level":"Level 2"}, "w"],
+  ["create_floor", {"boundary":[[0,0],[10000,0],[10000,8000],[0,8000]],"floor_type":"Beam and Block 200mm","level":"Level 1"}, "fl"],
+  ["create_slab_edge", {"floor_id":"$fl.id","edge_type":"Slab Edge","position":"bottom"}, null, {"expectContains":"id"}],
+  ["create_roof", {"boundary":[[-500,-500],[10500,-500],[10500,8500],[-500,8500]],"roof_type":"Generic - 125mm","level":"Level 2","slope_degrees":20,"sloped_edges":[0,2]}, "roof"],
+  ["create_fascia", {"roof_id":"$roof.id","fascia_type":"Fascia"}, null, {"expectContains":"id"}],
+  ["create_gutter", {"roof_id":"$roof.id","gutter_type":"Gutter"}, null, {"expectContains":"id"}],
+  ["create_wall_sweep", {"wall_ids":["$w.walls.0.id"],"profile_type":"Cornice","kind":"sweep","distance_mm":300}, null, {"expectContains":"created"}],
+  ["snapshot_3d", {"direction":"iso_se","width_px":900}]
+]

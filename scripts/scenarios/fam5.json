@@ -1,0 +1,261 @@
+[
+ [
+  "create_project",
+  {
+   "template": "systems",
+   "name": "Smoke Fam5"
+  }
+ ],
+ [
+  "list_standard_families",
+  {}
+ ],
+ [
+  "create_standard_family",
+  {
+   "kind": "table"
+  },
+  null,
+  {
+   "expectContains": "flex_test_passed"
+  }
+ ],
+ [
+  "create_standard_family",
+  {
+   "kind": "chair"
+  },
+  null,
+  {
+   "expectContains": "flex_test_passed"
+  }
+ ],
+ [
+  "create_standard_family",
+  {
+   "kind": "bed"
+  },
+  null,
+  {
+   "expectContains": "flex_test_passed"
+  }
+ ],
+ [
+  "create_standard_family",
+  {
+   "kind": "sofa"
+  },
+  null,
+  {
+   "expectContains": "flex_test_passed"
+  }
+ ],
+ [
+  "create_standard_family",
+  {
+   "kind": "wardrobe"
+  },
+  null,
+  {
+   "expectContains": "flex_test_passed"
+  }
+ ],
+ [
+  "create_standard_family",
+  {
+   "kind": "kitchen_base_cabinet"
+  },
+  null,
+  {
+   "expectContains": "flex_test_passed"
+  }
+ ],
+ [
+  "create_standard_family",
+  {
+   "kind": "wc"
+  },
+  null,
+  {
+   "expectContains": "flex_test_passed"
+  }
+ ],
+ [
+  "create_standard_family",
+  {
+   "kind": "washbasin"
+  },
+  null,
+  {
+   "expectContains": "flex_test_passed"
+  }
+ ],
+ [
+  "create_standard_family",
+  {
+   "kind": "bathtub"
+  },
+  null,
+  {
+   "expectContains": "flex_test_passed"
+  }
+ ],
+ [
+  "create_standard_family",
+  {
+   "kind": "ceiling_light"
+  },
+  null,
+  {
+   "expectContains": "flex_test_passed"
+  }
+ ],
+ [
+  "create_standard_family",
+  {
+   "kind": "air_diffuser"
+  },
+  null,
+  {
+   "expectContains": "flex_test_passed"
+  }
+ ],
+ [
+  "create_standard_family",
+  {
+   "kind": "fan_coil"
+  },
+  null,
+  {
+   "expectContains": "flex_test_passed"
+  }
+ ],
+ [
+  "create_standard_family",
+  {
+   "kind": "ahu"
+  },
+  null,
+  {
+   "expectContains": "flex_test_passed"
+  }
+ ],
+ [
+  "create_standard_family",
+  {
+   "kind": "pump"
+  },
+  null,
+  {
+   "expectContains": "flex_test_passed"
+  }
+ ],
+ [
+  "create_standard_family",
+  {
+   "kind": "electrical_panel"
+  },
+  null,
+  {
+   "expectContains": "flex_test_passed"
+  }
+ ],
+ [
+  "create_standard_family",
+  {
+   "kind": "round_column"
+  },
+  null,
+  {
+   "expectContains": "flex_test_passed"
+  }
+ ],
+ [
+  "create_standard_family",
+  {
+   "kind": "door_single"
+  },
+  null,
+  {
+   "expectContains": "flex_test_passed"
+  }
+ ],
+ [
+  "create_standard_family",
+  {
+   "kind": "door_double"
+  },
+  null,
+  {
+   "expectContains": "flex_test_passed"
+  }
+ ],
+ [
+  "create_standard_family",
+  {
+   "kind": "window_standard"
+  },
+  null,
+  {
+   "expectContains": "flex_test_passed"
+  }
+ ],
+ [
+  "place_family_instance",
+  {
+   "spec": {
+    "type": "Arian table: 1600x800",
+    "point": [
+     1000,
+     1000
+    ],
+    "level": "Level 1"
+   }
+  }
+ ],
+ [
+  "place_family_instance",
+  {
+   "spec": {
+    "type": "Arian chair: Standard",
+    "point": [
+     1000,
+     1800
+    ],
+    "level": "Level 1"
+   }
+  }
+ ],
+ [
+  "family_open",
+  {
+   "path": "C:/Users/arian/Documents/ArianFamilies/Arian table.rfa"
+  }
+ ],
+ [
+  "family_qa_report",
+  {
+   "document": "Arian table"
+  },
+  null,
+  {
+   "expectContains": "score"
+  }
+ ],
+ [
+  "family_export_type_catalog",
+  {
+   "document": "Arian table"
+  },
+  null,
+  {
+   "expectContains": "types"
+  }
+ ],
+ [
+  "family_close",
+  {
+   "document": "Arian table"
+  }
+ ]
+]

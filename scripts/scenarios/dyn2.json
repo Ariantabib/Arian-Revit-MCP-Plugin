@@ -1,0 +1,13 @@
+[
+  ["create_project", {"template":"structural","name":"Smoke Dyn2"}],
+  ["run_dynamo_python", {"code":"result = FilteredElementCollector(doc).OfClass(Level).GetElementCount()"}],
+  ["__sleep", {"ms":25000}],
+  ["get_dynamo_status", {}, null, {"expectContains":"script_result"}],
+  ["run_dynamo_graph", {"path":"C:/Program Files/Autodesk/Revit 2027/AddIns/DynamoForRevit/Samples/en-US/Revit/Revit Geometry Creation Curves.dyn"}],
+  ["__sleep", {"ms":8000}],
+  ["get_dynamo_status", {}, null, {"expectContains":"\"state\":\"finished\""}],
+  ["execute_csharp", {"code":"return new FilteredElementCollector(doc).OfClass(typeof(CurveElement)).GetElementCount();"}, null, {"expectContains":"\"result\":6"}],
+  ["run_dynamo_graph", {"path":"C:/Program Files/Autodesk/Revit 2027/AddIns/DynamoForRevit/Samples/en-US/Revit/Revit Geometry Creation Solids.dyn"}],
+  ["__sleep", {"ms":15000}],
+  ["get_dynamo_status", {}, null, {"expectContains":"Graph evaluated (46 nodes)"}]
+]

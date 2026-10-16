@@ -1,0 +1,21 @@
+[
+  ["create_project", {"template":"structural","name":"Smoke Struct3"}],
+  ["create_structural_column", {"point":[0,0],"column_type":"450 x 600mm","base_level":"Level 1","top_level":"Level 2"}, "col"],
+  ["create_beam", {"start":[0,0],"end":[6000,0],"beam_type":"300 x 600mm","level":"Level 2"}, "beam"],
+  ["create_floor", {"boundary":[[0,0],[6000,0],[6000,5000],[0,5000]],"floor_type":"Generic 300mm","level":"Level 2"}, "floor"],
+  ["list_rebar_types", {}],
+  ["create_column_reinforcement", {"column_id":"$col.id","long_bar_type":"19M","stirrup_type":"10M","cover_mm":40,"bars_per_face":3,"stirrup_spacing_mm":150}],
+  ["create_rebar", {"host_id":"$beam.id","bar_type":"19M","points":[[50,0,2460],[5950,0,2460]],"normal":[0,1,0],"set_count":3,"set_spacing_mm":80}],
+  ["create_rebar", {"host_id":"$beam.id","bar_type":"10M","points":[[50,-100,2450],[50,100,2450],[50,100,2950],[50,-100,2950]],"normal":[1,0,0],"style":"stirrup","set_count":20,"set_spacing_mm":200}],
+  ["list_load_cases", {}],
+  ["create_point_load", {"host_id":"$beam.id","point":[3000,0,3000],"force_kn":[0,0,-50],"load_case":"DL1"}],
+  ["create_line_load", {"host_id":"$beam.id","start":[0,0,3000],"end":[6000,0,3000],"force_kn_per_m":[0,0,-10],"load_case":"LL1"}],
+  ["create_area_load", {"host_id":"$floor.id","boundary":[[0,0,3000],[6000,0,3000],[6000,5000,3000],[0,5000,3000]],"pressure_kn_per_m2":[0,0,-5],"load_case":"LL1"}],
+  ["create_point_load", {"host_id":"$col.id","point":[0,0,3000],"force_kn":[0,0,-100]}],
+  ["create_wall", {"start":[0,8000],"end":[6000,8000],"wall_type":"Generic - 200mm","base_level":"Level 1","top_level":"Level 2"}, "wall"],
+  ["create_strip_footing", {"footing_type":"Bearing Footing - 900 x 300","wall_ids":["$wall.id"]}],
+  ["list_element_types", {"category":"Structural Trusses"}],
+  ["create_truss", {"start":[0,12000],"end":[8000,12000],"truss_type":"Standard","level":"Level 2"}],
+  ["set_structural_usage", {"ids":["$beam.id"],"enable_analytical":true}],
+  ["get_structural_summary", {}]
+]

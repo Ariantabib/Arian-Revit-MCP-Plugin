@@ -1,0 +1,15 @@
+bin/
+obj/
+dist/
+.vs/
+*.user
+*.rvt
+*.rfa
+*.0*.rvt
+*.0*.rfa
+scripts/scenarios/out_*
+*.pdf
+*.dwg
+*.fbx
+.claude/
+node_modules/

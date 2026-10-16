@@ -1,0 +1,16 @@
+[
+  ["create_project", {"template":"architectural","name":"ArianLayout"}],
+  ["create_building_levels", {"floors":2,"floor_height_mm":3200}],
+  ["create_plan_from_rooms", {"level":"Level 1","top_level":"Level 2","exterior_wall_type":"Generic - 200mm","interior_wall_type":"Generic - 200mm","create_floor":true,"floor_type":"Beam and Block 200mm","rooms":[
+    {"name":"Living Room","number":"101","origin":[0,0],"width_mm":6000,"depth_mm":5000},
+    {"name":"Kitchen","number":"102","origin":[6000,0],"width_mm":4000,"depth_mm":5000},
+    {"name":"Master Bedroom","number":"103","origin":[0,5000],"width_mm":4500,"depth_mm":4000},
+    {"name":"Bedroom 2","number":"104","origin":[4500,5000],"width_mm":3500,"depth_mm":4000},
+    {"name":"Bathroom","number":"105","origin":[8000,5000],"width_mm":2000,"depth_mm":4000}]}],
+  ["list_rooms", {}],
+  ["place_family_instances", {"items":[{"type":"M_Single-Flush: 0915 x 2134mm","point":[3000,0]},{"type":"M_Single-Flush: 0915 x 2134mm","point":[6000,2500]},{"type":"M_Single-Flush: 0915 x 2134mm","point":[2000,5000]},{"type":"M_Single-Flush: 0915 x 2134mm","point":[6000,5000]},{"type":"M_Single-Flush: 0915 x 2134mm","point":[8000,7500]},{"type":"M_Fixed: 0915 x 1220mm","point":[0,2500],"elevation_mm":900},{"type":"M_Fixed: 0915 x 1220mm","point":[8000,0],"elevation_mm":900},{"type":"M_Fixed: 0915 x 1220mm","point":[2250,9000],"elevation_mm":900}]}],
+  ["create_roof", {"boundary":[[-300,-300],[10300,-300],[10300,9300],[-300,9300]],"roof_type":"Generic - 125mm","level":"Level 2","flat":true}],
+  ["create_3d_view", {"name":"LayoutIso","eye":[16000,-9000,12000],"target":[5000,4500,1500]}],
+  ["get_view_image", {"view":"LayoutIso","width_px":1100}],
+  ["get_view_image", {"view":"Level 1","width_px":1100}]
+]

@@ -1,0 +1,21 @@
+[
+  ["family_build_from_spec", {"spec":{
+    "name":"Arian Pad Footing","template":"structural_foundation","category":"Structural Foundations","clear_geometry":true,
+    "parameters":[
+      {"name":"Length","type":"length","value":1500},
+      {"name":"Width","type":"length","value":1500},
+      {"name":"Foundation Thickness","type":"length","value":500}
+    ],
+    "types":[{"name":"1500x1500x500","values":{"Length":1500,"Width":1500,"Foundation Thickness":500}},{"name":"2000x2000x600","values":{"Length":2000,"Width":2000,"Foundation Thickness":600}}],
+    "shapes":[
+      {"kind":"box","name":"Pad","x":["-Length/2","Length/2"],"y":["-Width/2","Width/2"],"z":["-[Foundation Thickness]","0"]}
+    ]}}],
+  ["create_building_levels", {"floors":2,"floor_height_mm":3200}],
+  ["create_grid_system", {"x_spacings_mm":[5000,5000],"y_spacings_mm":[4000,4000]}],
+  ["create_columns_at_grid_intersections", {"column_type":"Arian Concrete Column: 400x400","base_level":"Level 1","top_level":"Level 2"}],
+  ["create_beams_along_grids", {"beam_type":"Arian Concrete Beam: 300x500","level":"Level 2","z_offset_mm":0}],
+  ["create_footings_under_columns", {"footing_type":"Arian Pad Footing: 2000x2000x600","level":"Level 1","elevation_offset_mm":-100}],
+  ["get_structural_summary", {}],
+  ["create_3d_view", {"name":"StructIso","eye":[14000,-10000,9000],"target":[5000,4000,1500]}],
+  ["get_view_image", {"view":"StructIso","width_px":1200}]
+]

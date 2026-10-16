@@ -1,0 +1,17 @@
+[
+  ["create_project", {"template":"architectural","name":"ArianSmoke1"}],
+  ["create_building_levels", {"floors":2,"floor_height_mm":3200,"name_pattern":"Level {n}"}],
+  ["list_levels", {}],
+  ["create_grid_system", {"x_spacings_mm":[5000,5000],"y_spacings_mm":[4000,4000]}],
+  ["create_walls", {"points":[[0,0],[10000,0],[10000,8000],[0,8000]],"closed":true,"wall_type":"Generic - 200mm","base_level":"Level 1","top_level":"Level 2"}, "walls"],
+  ["create_wall", {"start":[5000,0],"end":[5000,8000],"wall_type":"Generic - 200mm","base_level":"Level 1","top_level":"Level 2"}],
+  ["list_element_types", {"category":"Doors","limit":5}],
+  ["list_element_types", {"category":"Windows","limit":5}],
+  ["list_element_types", {"category":"Floors","limit":5}],
+  ["list_element_types", {"category":"Roofs","limit":5}],
+  ["list_element_types", {"category":"Stairs","limit":5}],
+  ["list_element_types", {"category":"Railings","limit":5}],
+  ["list_element_types", {"category":"Ceilings","limit":5}],
+  ["list_families", {"category":"Doors"}],
+  ["list_families", {"category":"Windows"}]
+]

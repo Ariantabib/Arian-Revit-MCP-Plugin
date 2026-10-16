@@ -1,0 +1,12 @@
+[
+  ["create_project",{"template":"architectural","name":"Smoke WarnPolicy"}],
+  ["set_warning_policy",{"policy":"off"}],
+  ["execute_csharp",{"code":"var lv = new FilteredElementCollector(doc).OfClass(typeof(Level)).Cast<Level>().OrderBy(l => l.Elevation).First();\nvar wt = new FilteredElementCollector(doc).OfClass(typeof(WallType)).Cast<WallType>().First(t => t.Kind == WallKind.Basic);\ndouble f = 1 / 304.8;\nvar w1 = Wall.Create(doc, Line.CreateBound(new XYZ(0, 30000 * f, 0), new XYZ(4000 * f, 30000 * f, 0)), wt.Id, lv.Id, 3000 * f, 0, false, false);\nvar w2 = Wall.Create(doc, Line.CreateBound(new XYZ(0, 33000 * f, 0), new XYZ(4000 * f, 33000 * f, 0)), wt.Id, lv.Id, 3000 * f, 0, false, false);\ndoc.Regenerate();\nvar view = new FilteredElementCollector(doc).OfClass(typeof(ViewPlan)).Cast<ViewPlan>().First(v => !v.IsTemplate && v.ViewType == ViewType.FloorPlan && v.GenLevel.Id == lv.Id);\nvar ra = new ReferenceArray();\nra.Append(HostObjectUtils.GetSideFaces(w1, ShellLayerType.Exterior)[0]);\nra.Append(HostObjectUtils.GetSideFaces(w2, ShellLayerType.Exterior)[0]);\nvar dim = doc.Create.NewDimension(view, Line.CreateBound(new XYZ(2000 * f, 30000 * f, 0), new XYZ(2000 * f, 33000 * f, 0)), ra);\ndim.IsLocked = true;\nw1.Pinned = true;\nreturn w2.Id.Value;","transaction":true},"setup"],
+  ["move_elements",{"ids":["$setup.result"],"vector":[0,500,0]},null,{"expectError":"Constraints are not satisfied"}],
+  ["set_warning_policy",{"policy":"ignore_warnings"}],
+  ["move_elements",{"ids":["$setup.result"],"vector":[0,500,0]},null,{"expectError":"Constraints are not satisfied"}],
+  ["set_warning_policy",{"policy":"ignore_and_resolve_errors"}],
+  ["move_elements",{"ids":["$setup.result"],"vector":[0,500,0]},null,{"expectContains":"auto_resolved_errors"}],
+  ["get_element",{"id":"$setup.result"}],
+  ["set_warning_policy",{"policy":"ignore_warnings"}]
+]
